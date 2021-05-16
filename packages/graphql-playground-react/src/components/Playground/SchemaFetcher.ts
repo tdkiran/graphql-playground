@@ -17,7 +17,8 @@ export interface TracingSchemaTuple {
 }
 
 export interface SchemaFetchProps {
-  endpoint: string
+  endpoint: string,
+  proxyEndpoint: string,
   headers?: string
   useTracingHeader?: boolean
 }
@@ -108,8 +109,9 @@ export class SchemaFetcher {
   private fetchSchema(
     session: SchemaFetchProps,
   ): Promise<{ schema: GraphQLSchema; tracingSupported: boolean } | null> {
+    session.endpoint = "https://graphql-weather-api.herokuapp.com/";
     const hash = this.hash(session)
-    const { endpoint } = session
+    const { endpoint, } = session
     const headersTracing = {
       ...parseHeaders(session.headers),
       'X-Apollo-Tracing': '1',
